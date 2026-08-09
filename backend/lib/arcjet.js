@@ -8,12 +8,14 @@ const aj = arcjet({
         shield({ mode: "LIVE" }),
         // Create a bot detection rule
         detectBot({
-        mode: "LIVE",
-        // Block all bots except the following
-        allow: [
-            "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
-            // See the full list at https://arcjet.com/bot-list
-        ],
+            mode: "LIVE",
+            // Block all bots except the following
+            allow: [
+                "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
+                "CATEGORY:TOOL", // API testing tools like Postman
+                "CATEGORY:CURL", // curl requests
+                "CATEGORY:PROGRAMMATIC",
+            ],
         }),
         slidingWindow({
         mode: "LIVE", // Tracked by IP address by default, but this can be customized
