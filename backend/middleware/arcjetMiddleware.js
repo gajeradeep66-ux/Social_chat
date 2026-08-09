@@ -4,6 +4,9 @@ import { ENV } from '../lib/env.js';
 
 export const arcjetProtection = async (req, res, next) => {
     try {
+        if (!ENV.ARCJET_KEY || !aj) {
+            return next();
+        }
         const decision = await aj.protect(req)
 
         if(decision.isDenied()) {

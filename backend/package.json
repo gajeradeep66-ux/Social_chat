@@ -11,7 +11,7 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@arcjet/analyze-wasm": "^1.9.1",
