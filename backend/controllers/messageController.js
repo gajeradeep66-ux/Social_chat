@@ -2,6 +2,7 @@ import Message from '../models/Message.js'
 import User from '../models/User.js'
 import cloudinary from '../lib/cloudinary.js'
 import { io, getReceiverSocketId } from '../lib/socket.js'
+import mongoose from 'mongoose'
 
 export const getAllContacts = async (req, res) => {
     try {
@@ -33,9 +34,10 @@ export const getAllContacts = async (req, res) => {
         );
 
         const allContactIds = [...new Set([...contactIdsFromFollow, ...chatPartnerIds])];
+        const objectIds = allContactIds.map(id => new mongoose.Types.ObjectId(id));
 
         const contacts = await User.find({
-            _id: { $in: allContactIds, $ne: loggedInUserId }
+            _id: { $in: objectIds, $ne: loggedInUserId }
         }).select("-password");
 
         res.status(200).json(contacts);
@@ -160,14 +162,18 @@ export const getChatPartners = async (req, res) => {
         const chatPartnerIds = [
             ...new Set(
                 messages.map((msg) =>
-                msg.senderId.toString() === loggedInUserId.toString()
-                    ? msg.receiverId.toString()
-                    : msg.senderId.toString()
+                    msg.senderId.toString() === loggedInUserId.toString()
+                        ? msg.receiverId.toString()
+                        : msg.senderId.toString()
                 )
             ),
-            ];
+        ];
 
-    const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select("-password");
+        const objectIds = chatPartnerIds.map(id => new mongoose.Types.ObjectId(id));
+
+        const chatPartners = await User.find({
+            _id: { $in: objectIds, $ne: loggedInUserId }
+        }).select("-password");
 
 
         res.status(200).json(chatPartners)
