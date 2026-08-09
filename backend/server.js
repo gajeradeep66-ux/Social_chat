@@ -18,7 +18,22 @@ const PORT = ENV.PORT || 9056;
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-app.use(cors({ origin: ENV.CLIENT_URL || true, credentials: true }));
+const allowedOrigins = [
+    ENV.CLIENT_URL,
+    "https://social-chat-frontend.onrender.com",
+    "http://localhost:5173",
+    "http://localhost:9056"
+].filter(Boolean);
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || true) {
+            return callback(null, origin || true);
+        }
+        return callback(null, true);
+    },
+    credentials: true
+}));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
