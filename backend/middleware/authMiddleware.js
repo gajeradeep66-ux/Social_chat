@@ -4,19 +4,24 @@ import {ENV} from '../lib/env.js'
 
 export const protectRoute = async (req, res, next) => {
     try {
-        const token = req.cookies.jwt;
-        if (!token) return res.status(401).json({ message : "Unauthorized - No token provided"})
+        let token = req.cookies?.jwt;
 
-        const decoded = jwt.verify(token, ENV.JWT_SECRET)
-        if (!decoded) return res.status(401).json({ message : "Unauthorized - Invalid token"})
+        if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+            token = req.headers.authorization.split(" ")[1];
+        }
 
-        const user = await User.findById(decoded.userId).select('-password')
-        if (!user) return res.status(401).json({ message : "User not found"})
+        if (!token) return res.status(401).json({ message: "Unauthorized - No token provided" });
+
+        const decoded = jwt.verify(token, ENV.JWT_SECRET);
+        if (!decoded) return res.status(401).json({ message: "Unauthorized - Invalid token" });
+
+        const user = await User.findById(decoded.userId).select('-password');
+        if (!user) return res.status(401).json({ message: "User not found" });
         
-        req.user = user
-        next()
+        req.user = user;
+        next();
     } catch (error) {
-        console.error("Error in protectRoute middleware", error)
-        res.status(500).json({ message : "Internal server error" })
+        console.error("Error in protectRoute middleware:", error.message);
+        res.status(401).json({ message: "Unauthorized - Invalid or expired token" });
     }
 }

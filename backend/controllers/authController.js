@@ -33,8 +33,8 @@ export const Signup = async (req, res) => {
         })
 
         if(newUser) {
-            const savedUser = await newUser.save()
-            generateToken(savedUser._id, res)
+            const savedUser = await newUser.save();
+            const token = generateToken(savedUser._id, res);
 
             res.status(201).json({
                 _id: newUser._id,
@@ -44,14 +44,15 @@ export const Signup = async (req, res) => {
                 followers: newUser.followers || [],
                 following: newUser.following || [],
                 followRequests: newUser.followRequests || [],
-            })
+                token,
+            });
 
         } else {
-            return res.status(400).json({ message : "Invalid user data"})
+            return res.status(400).json({ message : "Invalid user data"});
         }
     } catch (error) {
-        console.error('Error in signup controll:',error)
-        return res.status(500).json({ message : "Internal server error"})
+        console.error('Error in signup controller:', error);
+        return res.status(500).json({ message : "Internal server error"});
     }
 }
 
@@ -59,43 +60,45 @@ export const Login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+        return res.status(400).json({ message: "Email and password are required" });
     }   
 
     try {
-        const user = await User.findOne({ email })
-        if (!user) return res.status(400).json({ message : "Invalid email"})
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ message : "Invalid email"});
 
-        const isPasswordCorrect = await bcryptjs.compare(password, user.password)
-        if(!isPasswordCorrect) return res.status(400).json({ message : "Invalid password"})
+        const isPasswordCorrect = await bcryptjs.compare(password, user.password);
+        if(!isPasswordCorrect) return res.status(400).json({ message : "Invalid password"});
         
-        generateToken(user._id, res);
+        const token = generateToken(user._id, res);
 
         res.status(200).json({
-                _id: user._id,
-                fullName: user.fullName,
-                email: user.email,
-                profilePic: user.profilePic,
-                followers: user.followers || [],
-                following: user.following || [],
-                followRequests: user.followRequests || [],
-            })
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+            followers: user.followers || [],
+            following: user.following || [],
+            followRequests: user.followRequests || [],
+            token,
+        });
     } catch (error) {
-        console.error("Error in login controller:",error)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.error("Error in login controller:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
 import { ENV } from '../lib/env.js'
 
 export const Logout = (_, res) => {
+    const isProduction = ENV.NODE_ENV === 'production' || process.env.NODE_ENV === 'production';
     res.cookie("jwt", "", {
         maxAge: 0,
         httpOnly: true,
-        sameSite: ENV.NODE_ENV === 'development' ? 'lax' : 'none',
-        secure: ENV.NODE_ENV === 'development' ? false : true,
-    })
-    res.status(200).json({ message : "Logged out successfully"})
+        sameSite: isProduction ? 'none' : 'lax',
+        secure: isProduction,
+    });
+    res.status(200).json({ message : "Logged out successfully"});
 }
 
 export const updateProfile = async (req, res) => {
