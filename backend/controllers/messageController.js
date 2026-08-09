@@ -51,33 +51,41 @@ export const getAllContacts = async (req, res) => {
 export const getMessagesByUserId = async (req, res) => {
     try {
         const myId = req.user._id;
-        const {id: userToChatId} = req.params
+        const {id: userToChatId} = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(userToChatId)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
 
         const message = await Message.find({
             $or : [
                 {senderId:myId, receiverId: userToChatId},
                 {senderId:userToChatId, receiverId: myId},
             ]
-        })
+        });
 
-        res.status(202).json(message)
+        res.status(200).json(message);
     } catch (error) {
-        console.error("Error in get messages:", error.message)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.error("Error in get messages:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
 export const sendMessage = async (req, res) => {
     try {
         const { text , image , video , audio } = req.body;
-        const { id : receiverId } = req.params
+        const { id : receiverId } = req.params;
         const senderId = req.user._id;
+
+        if (!mongoose.Types.ObjectId.isValid(receiverId)) {
+            return res.status(400).json({ message: "Invalid receiver ID" });
+        }
 
         if (!text && !image && !video && !audio) {
             return res.status(400).json({ message: "Text or image or video or audio is required." });
         }
 
-        if (senderId.equals(receiverId)) {
+        if (senderId.toString() === receiverId.toString()) {
             return res.status(400).json({ message: "Cannot send messages to yourself." });
         }
 

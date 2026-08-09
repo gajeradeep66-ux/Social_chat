@@ -1,4 +1,5 @@
 import User from '../models/User.js'
+import mongoose from 'mongoose'
 
 const ensureArray = (doc, field) => {
     if (!doc[field] || !Array.isArray(doc[field])) {
@@ -24,6 +25,9 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
         const user = await User.findById(req.params.id).select("-password");
         if (!user) return res.status(404).json({ message: "User not found" });
         res.status(200).json(user);
@@ -36,6 +40,10 @@ export const sendFollowRequest = async (req, res) => {
     try {
         const senderId = req.user._id;
         const receiverId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(receiverId)) {
+            return res.status(400).json({ message: "Invalid target user ID" });
+        }
 
         if (senderId.toString() === receiverId)
             return res.status(400).json({ message: "Cannot follow yourself" });
@@ -69,6 +77,10 @@ export const acceptFollowRequest = async (req, res) => {
         const myId = req.user._id;
         const senderId = req.params.id;
 
+        if (!mongoose.Types.ObjectId.isValid(senderId)) {
+            return res.status(400).json({ message: "Invalid sender user ID" });
+        }
+
         const me = await User.findById(myId);
         const sender = await User.findById(senderId);
 
@@ -77,11 +89,15 @@ export const acceptFollowRequest = async (req, res) => {
         ensureArray(me, "followRequests");
         ensureArray(me, "followers");
         ensureArray(me, "following");
+        ensureArray(sender, "followRequests");
         ensureArray(sender, "followers");
         ensureArray(sender, "following");
 
         me.followRequests = me.followRequests.filter(
             (id) => getId(id) !== senderId.toString()
+        );
+        sender.followRequests = sender.followRequests.filter(
+            (id) => getId(id) !== myId.toString()
         );
 
         if (!me.followers.some((id) => getId(id) === senderId.toString())) {
@@ -112,6 +128,10 @@ export const rejectFollowRequest = async (req, res) => {
     try {
         const myId = req.user._id;
         const senderId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(senderId)) {
+            return res.status(400).json({ message: "Invalid sender user ID" });
+        }
 
         const me = await User.findById(myId);
         if (!me) return res.status(404).json({ message: "User not found" });
@@ -146,6 +166,10 @@ export const cancelFollowRequest = async (req, res) => {
     try {
         const senderId = req.user._id;
         const receiverId = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(receiverId)) {
+            return res.status(400).json({ message: "Invalid receiver user ID" });
+        }
 
         const receiver = await User.findById(receiverId);
 
