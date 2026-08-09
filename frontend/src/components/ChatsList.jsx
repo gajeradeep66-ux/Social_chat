@@ -15,11 +15,12 @@ const getIdStr = (item) => {
 
 const ChatsList = () => {
     const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore()
-    const { onlineUsers } = useAuthStore()
+    const { authUser, onlineUsers } = useAuthStore()
 
     useEffect(() => {
+        if (!authUser) return;
         getMyChatPartners()
-    }, [getMyChatPartners])
+    }, [authUser, getMyChatPartners])
 
     if(isUsersLoading) return <UsersLoadingSkeleton />
     if(chats.length === 0 ) return <NoChatsFound />

@@ -16,11 +16,12 @@ const getIdStr = (item) => {
 
 const ContactList = () => {
     const { getAllContacts, allContacts, setSelectedUser, isUsersLoading } = useChatStore();
-    const { onlineUsers } = useAuthStore();
+    const { authUser, onlineUsers } = useAuthStore();
 
     useEffect(() => {
+        if (!authUser) return;
         getAllContacts()
-    }, [getAllContacts])
+    }, [authUser, getAllContacts])
 
     if(isUsersLoading) return <UsersLoadingSkeleton />;
 
