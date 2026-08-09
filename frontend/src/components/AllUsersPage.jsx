@@ -58,10 +58,11 @@ const AllUsersPage = () => {
     } = useChatStore();
 
     useEffect(() => {
+        if (!authUser) return;
         getAllUsers();
         getAllContacts();
         getMyChatPartners();
-    }, [getAllUsers, getAllContacts, getMyChatPartners]);
+    }, [authUser, getAllUsers, getAllContacts, getMyChatPartners]);
 
     const isExistingContactOrChat = (user) => {
         if (!user) return false;

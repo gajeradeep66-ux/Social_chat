@@ -71,11 +71,12 @@ const FollowRequestsPage = () => {
     const [activeSection, setActiveSection] = useState("incoming"); // "incoming" | "discover"
 
     useEffect(() => {
+        if (!authUser) return;
         getFollowRequests();
         getAllUsers();
         getAllContacts();
         getMyChatPartners();
-    }, [getFollowRequests, getAllUsers, getAllContacts, getMyChatPartners]);
+    }, [authUser, getFollowRequests, getAllUsers, getAllContacts, getMyChatPartners]);
 
     const handleChat = (user) => {
         setSelectedUser(user);
