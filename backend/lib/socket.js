@@ -7,10 +7,21 @@ import { socketAuthMiddleware } from '../middleware/socketAuthMiddleware.js'
 const app = express()
 const server = http.createServer(app)
 
+const allowedOrigins = [
+    ENV.CLIENT_URL,
+    "https://social-chat-frontend.onrender.com",
+    "http://localhost:5173",
+    "http://localhost:3000"
+].filter(Boolean);
+
 const io = new Server(server, {
     cors: {
         origin: (origin, callback) => {
-            callback(null, origin || true);
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, origin || true);
+            } else {
+                callback(null, origin);
+            }
         },
         credentials: true,
     }
