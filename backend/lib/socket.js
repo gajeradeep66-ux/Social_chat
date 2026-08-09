@@ -9,11 +9,9 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin: [
-            ENV.CLIENT_URL,
-            "https://social-chat-frontend.onrender.com",
-            "http://localhost:5173"
-        ].filter(Boolean),
+        origin: (origin, callback) => {
+            callback(null, origin || true);
+        },
         credentials: true,
     }
 })
