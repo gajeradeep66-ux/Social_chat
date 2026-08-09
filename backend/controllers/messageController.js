@@ -108,8 +108,8 @@ export const sendMessage = async (req, res) => {
         });
 
         const isContact = followersStr.includes(receiverId.toString()) ||
-                          followingStr.includes(receiverId.toString()) ||
-                          existingMessages.length > 0;
+                        followingStr.includes(receiverId.toString()) ||
+                        existingMessages.length > 0;
 
         if (!isContact) {
             return res.status(403).json({ message: "You can only chat with accepted contacts." });
