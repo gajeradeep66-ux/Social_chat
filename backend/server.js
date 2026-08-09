@@ -32,7 +32,7 @@ app.use("/api/follow", followReq);
 app.use("/api/follow-requests", followReq);
 
 // Catch-all 404 handler for unknown API routes
-app.use("/api/*", (req, res) => {
+app.use("/api", (req, res) => {
     res.status(404).json({ message: "API endpoint not found" });
 });
 
@@ -41,7 +41,7 @@ if (ENV.NODE_ENV === "production" || process.env.NODE_ENV === "production") {
     const distPath = path.join(__dirname, "../frontend/dist");
     app.use(express.static(distPath));
 
-    app.get("*", (req, res) => {
+    app.use((req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
     });
 }
