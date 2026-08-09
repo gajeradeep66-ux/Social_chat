@@ -117,6 +117,7 @@ export const useAuthStore = create((set, get) => ({
     },
 
     getAllUsers: async () => {
+        if (!get().authUser) return;
         try {
             const res = await axiosInstance.get("/follow/users");
             set({ allUsers: res.data });
@@ -128,6 +129,7 @@ export const useAuthStore = create((set, get) => ({
 
     // Get pending follow requests
     getFollowRequests: async () => {
+        if (!get().authUser) return;
         try {
             const res = await axiosInstance.get("/follow/requests");
             set({ followRequests: res.data });

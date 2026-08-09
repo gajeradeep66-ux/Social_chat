@@ -22,6 +22,7 @@ export const useChatStore = create((set, get) => ({
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 
     getAllContacts: async () => {
+        if (!useAuthStore.getState().authUser) return;
         set({ isUsersLoading: true });
         try {
             const res = await axiosInstance.get("/messages/contacts");
@@ -33,6 +34,7 @@ export const useChatStore = create((set, get) => ({
         }
     },
     getMyChatPartners: async () => {
+        if (!useAuthStore.getState().authUser) return;
         set({ isUsersLoading: true });
         try {
             const res = await axiosInstance.get("/messages/chats");
