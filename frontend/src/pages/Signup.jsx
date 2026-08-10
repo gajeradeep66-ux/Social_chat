@@ -22,7 +22,7 @@ const Signup = () => {
     
     return (
         <div className="w-full h-full flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900">
-        <div className="relative w-full max-w-5xl md:h-[560px] lg:h-[600px] h-auto my-auto">
+        <div className="relative w-full max-w-5xl md:h-140 lg:h-150 h-auto my-auto">
             <BorderAnimatedContainer>
             <div className="w-full h-full flex flex-col md:flex-row">
                 <div className="md:w-1/2 h-full p-6 sm:p-8 flex items-center justify-center md:border-r border-slate-600/30">
@@ -115,7 +115,7 @@ const Signup = () => {
                     <img
                     src="/signup.png"
                     alt="People using mobile devices"
-                    className="w-full max-h-[300px] object-contain mx-auto"
+                    className="w-full max-h-75 object-contain mx-auto"
                     />
                     <div className="mt-6 text-center">
                     <h3 className="text-xl font-medium text-cyan-400">Start Your Journey Today</h3>
