@@ -21,17 +21,19 @@ const App = () => {
   if(isCheckingAuth) return <PageLoader />
 
   return (
-    <div className="min-h-screen bg-slate-900 relative flex items-center justify-center p-4 overflow-hidden ">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right, #4f4f4f2e_1px, transparent_1px), linear-gradient(to_bottom, #4f4f4f2e_1px, transparent_1px)]" />
-      <Routes>
-        <Route path="/" element={authUser ? <Chat /> : <Navigate to={'/login'}/> } />
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to={'/'}/> } />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={'/'}/> } />
-        <Route path="/follow-requests" element={authUser ? <FollowRequestsPage /> : <Navigate to={'/login'}/> } />
-        <Route path="/users" element={authUser ? <AllUsersPage  /> : <Navigate to={'/login'}/> } />
-        <Route path="/profile/:id" element={authUser ? <UserProfilePage /> : <Navigate to={'/login'} />}/>
-        <Route path="*" element={"404 Not Found"} />
-      </Routes>
+    <div className="h-screen w-screen bg-slate-900 relative flex flex-col overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] pointer-events-none" />
+      <div className="relative z-10 w-full h-full flex flex-col overflow-hidden">
+        <Routes>
+          <Route path="/" element={authUser ? <Chat /> : <Navigate to={'/login'}/> } />
+          <Route path="/login" element={!authUser ? <Login /> : <Navigate to={'/'}/> } />
+          <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={'/'}/> } />
+          <Route path="/follow-requests" element={authUser ? <FollowRequestsPage /> : <Navigate to={'/login'}/> } />
+          <Route path="/users" element={authUser ? <AllUsersPage  /> : <Navigate to={'/login'}/> } />
+          <Route path="/profile/:id" element={authUser ? <UserProfilePage /> : <Navigate to={'/login'} />}/>
+          <Route path="*" element={"404 Not Found"} />
+        </Routes>
+      </div>
 
       <Toaster />
     </div>

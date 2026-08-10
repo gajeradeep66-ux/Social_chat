@@ -107,7 +107,8 @@ const FollowRequestsPage = () => {
     );
 
     return (
-        <div className="w-full max-w-2xl mx-auto bg-slate-800/90 border border-slate-700/60 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden p-6 text-slate-100 min-h-125 flex flex-col">
+        <div className="w-full h-full flex items-center justify-center p-4 overflow-y-auto bg-slate-900">
+            <div className="w-full max-w-2xl bg-slate-800/90 border border-slate-700/60 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden p-6 text-slate-100 min-h-125 flex flex-col my-auto">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-700/50 pb-4 mb-6">
                 <button
@@ -291,6 +292,7 @@ const FollowRequestsPage = () => {
                 )}
             </div>
         </div>
+    </div>
     );
 };
 
