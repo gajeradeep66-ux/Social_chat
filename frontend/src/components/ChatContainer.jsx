@@ -6,7 +6,7 @@ import NoChatHistoryPlaceholder from './NoChatHistoryPlaceholder'
 import MessageInput from './MessageInput'
 import MessagesLoadingSkeleton from './MessagesLoadingSkeleton'
 import MediaModal from './MediaModal'
-import { Maximize2 } from 'lucide-react'
+import { Maximize2, Trash2 } from 'lucide-react'
 
 const ChatContainer = () => {
 
@@ -16,7 +16,8 @@ const ChatContainer = () => {
         messages, 
         isMessagesLoading, 
         subscribeToMessages, 
-        unsubscribeFromMessages
+        unsubscribeFromMessages,
+        deleteMessage
     } = useChatStore();
     const { authUser } = useAuthStore();
     const messageEndRef = useRef(null);
@@ -60,8 +61,18 @@ const ChatContainer = () => {
                         {messages.map((msg) => (
                             <div
                                 key={msg._id}
-                                className={`chat ${msg.senderId === authUser._id ? 'chat-end' : 'chat-start'}`}
+                                className={`chat ${msg.senderId === authUser._id ? 'chat-end' : 'chat-start'} group/msg relative`}
                             >
+                                {msg.senderId === authUser._id && (
+                                    <button
+                                        type="button"
+                                        onClick={() => deleteMessage(msg._id)}
+                                        className="opacity-0 group-hover/msg:opacity-100 transition-opacity p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800/80 rounded-full cursor-pointer transition-all duration-200 self-center me-1.5"
+                                        title="Delete Message"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                )}
                                 <div
                                     className={`chat-bubble relative group ${
                                         msg.senderId === authUser._id

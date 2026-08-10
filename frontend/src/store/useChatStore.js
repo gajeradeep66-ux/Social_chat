@@ -92,6 +92,16 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
+    deleteMessage: async (messageId) => {
+        try {
+            await axiosInstance.delete(`/messages/${messageId}`);
+            set({ messages: get().messages.filter((m) => m._id !== messageId) });
+            toast.success("Message deleted");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to delete message");
+        }
+    },
+
     subscribeToMessages: () => {
         const { selectedUser, isSoundEnabled } = get();
         if (!selectedUser) return;
@@ -113,12 +123,18 @@ export const useChatStore = create((set, get) => ({
                 notificationSound.play().catch((e) => console.log("Audio play failed:", e));
             }
         });
+
+        socket.off("messageDeleted");
+        socket.on("messageDeleted", (deletedMessageId) => {
+            set({ messages: get().messages.filter((m) => m._id !== deletedMessageId) });
+        });
     },
 
     unsubscribeFromMessages: () => {
         const socket = useAuthStore.getState().socket;
         if (socket) {
             socket.off("newMessage");
+            socket.off("messageDeleted");
         }
     }
 }));

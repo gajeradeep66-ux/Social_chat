@@ -5,6 +5,7 @@ import {
         getMessagesByUserId ,  
         sendMessage,
         getChatPartners,
+        deleteMessage,
     } from '../controllers/messageController.js'
 import { arcjetProtection } from '../middleware/arcjetMiddleware.js';
 
@@ -17,5 +18,6 @@ router.get('/chats', getChatPartners)
 router.get('/:id',  getMessagesByUserId)
 
 router.post('/send/:id', sendMessage)
+router.delete('/:id', deleteMessage)
 
 export default router;
