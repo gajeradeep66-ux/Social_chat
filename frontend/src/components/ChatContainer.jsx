@@ -67,7 +67,7 @@ const ChatContainer = () => {
                                     <button
                                         type="button"
                                         onClick={() => deleteMessage(msg._id)}
-                                        className="opacity-0 group-hover/msg:opacity-100 transition-opacity p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800/80 rounded-full cursor-pointer transition-all duration-200 self-center me-1.5"
+                                        className="opacity-0 group-hover/msg:opacity-100 p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800/80 rounded-full cursor-pointer transition-all duration-200 self-center me-1.5"
                                         title="Delete Message"
                                     >
                                         <Trash2 className="w-4 h-4" />
