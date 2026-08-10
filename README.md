@@ -4,6 +4,8 @@
 
 [Social Chat](https://social-chat-frontend.onrender.com)
 
+🌐 **Live Demo:** https://social-chat-frontend.onrender.com
+
 ---
 
 ## 📌 About the Project
@@ -69,4 +71,4 @@ Send / Receive Messages
 
 **Gajera Deep**
 
-🌐 **Live Demo:** https://social-chat-frontend.onrender.com
+GitHub: https://github.com/gajeradeep66-ux
