@@ -123,7 +123,7 @@ const MessageInput = () => {
             ]
                 .filter(item => item.url)
                 .map(({ type, url }) => (
-                    <div key={type} className='max-w-3xl mx-auto mb-3 flex items-center'>
+                    <div key={type} className='w-full mb-3 flex items-center'>
                         <div className='relative'>
                             {type === 'image' && (
                                 <img 
@@ -157,7 +157,7 @@ const MessageInput = () => {
 
             <form 
                 onSubmit={handleSendMessage}
-                className='max-w-3xl mx-auto flex items-center space-x-3'
+                className='w-full flex items-center space-x-3'
             >
                 <input 
                     type="file"
