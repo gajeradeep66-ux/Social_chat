@@ -174,7 +174,7 @@ const MessageInput = () => {
                         setText(e.target.value)
                         isSoundEnabled && playRandomKeyStrokeSound()
                     }}
-                    className='flex-1 bg-slate-800/50 border border-slate-700/50 rounded-lg py-2.5 px-4 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500/50 transition-colors'
+                    className='chat-input'
                     placeholder='Type a message...' 
                 />
 
@@ -228,7 +228,7 @@ const MessageInput = () => {
                 <button
                     type='submit'
                     disabled={!text.trim() && !imagePreview && !videoPreview && !audioPreview}
-                    className='p-2.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:hover:bg-cyan-600 text-white rounded-lg transition-colors flex items-center justify-center enabled:cursor-pointer disabled:cursor-not-allowed shadow-md'
+                    className='chat-send-btn'
                     title='Send message'
                 >
                     <Send className='w-5 h-5' />
