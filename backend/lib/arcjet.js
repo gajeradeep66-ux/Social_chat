@@ -21,6 +21,7 @@ try {
                     "CATEGORY:TOOL", // API testing tools like Postman
                     "CATEGORY:CURL", // curl requests
                     "CATEGORY:PROGRAMMATIC",
+                    "SEARCH_ENGINE"
                 ],
             }),
             slidingWindow({
